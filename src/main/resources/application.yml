@@ -1,0 +1,61 @@
+rabbit:
+  addresses: amqp://pnujzvih:OyYY_Nva7Sm0Rd_tW9XLmFelfKPoq7e_@bulldog.rmq.cloudamqp.com/pnujzvih
+  username: pnujzvih
+  password: OyYY_Nva7Sm0Rd_tW9XLmFelfKPoq7e_
+  
+mongo:
+  uri: mongodb+srv://brasajava:brasajava@cluster0-lmjzd.mongodb.net/test?retryWrites=true
+  
+server:
+  port: 9090
+  
+spring:
+  #main:
+    #web-application-type: reactive
+
+  # MONGO
+  data:
+    mongodb:
+      uri: ${mongo.uri}
+      #host: 192.168.99.100
+      #host: ${mongo.host}
+      #port: 27017
+      #database: person
+
+    
+ # RABBIT
+  rabbitmq:
+    username: ${rabbit.username}
+    password: ${rabbit.password}
+    addresses: ${rabbit.addresses}
+  cloud: 
+    stream: 
+      bindings:
+      
+        # DEFAULT
+        defauld:
+          content-type: application/json
+
+          # PRODUCER
+          producer:
+            required-groups:
+            -  listener
+            
+        # PROSPECT SENDER    
+        output: 
+          destination: brasajava.tx
+          
+        # CONSENT REVOKED LISTENER
+        input:
+          destination: brasajava.tx
+          group: brasajava.user
+          
+      rabbit:
+        bindings:
+          output:
+            producer:
+              routing-key-expression: headers.routingKey
+          input:
+            consumer:
+              queueNameGroupOnly: true
+              bindingRoutingKey: 'brasajava.person.search.response'
