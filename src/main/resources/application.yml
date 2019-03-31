@@ -17,17 +17,18 @@ spring:
   data:
     mongodb:
       uri: ${mongo.uri}
-      #host: 192.168.99.100
-      #host: ${mongo.host}
-      #port: 27017
-      #database: person
+#     host: localhost
+#     port: 27017
+#     database: user
 
     
  # RABBIT
   rabbitmq:
+#    host: ${rabbit.host}
     username: ${rabbit.username}
     password: ${rabbit.password}
     addresses: ${rabbit.addresses}
+
   cloud: 
     stream: 
       bindings:
